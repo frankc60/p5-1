@@ -72,6 +72,8 @@ class Ecl {
           Ecl.inst[w].colour = "red";
           this.dr = !this.dr;
           this.drv = !this.drv;
+          Ecl.inst[w].dr = !Ecl.inst[w].dr;
+          Ecl.inst[w].drv = !Ecl.inst[w].drv;
           this.draw();
           //delete this;
         } else {
