@@ -13,7 +13,10 @@ class Ecl {
     this.r = r;
     //this.w = d;
     this.dr = true;
+    this.drv = true;
     this.step = 1;
+    this.stepv = 1;
+
     this.colour = "yellow";
     this.init = () => {
       console.log(this.x, this.y, this.r * 2, this.r * 2);
@@ -29,11 +32,14 @@ class Ecl {
     fill(c);
     ellipse(this.x, this.y, this.r * 2, this.r * 2);
     //console.log("instances " + Ecl.inst.length);
+    return this;
   }
 
   move() {
     //check dr(direction), either subtract step from current location or ADD step to current location
     this.dr ? (this.x = this.x - this.step) : (this.x = this.x + this.step);
+    this.drv ? (this.y = this.y - this.stepv) : (this.y = this.y + this.stepv);
+    return this;
   }
 
   edges() {
@@ -42,6 +48,12 @@ class Ecl {
       //reverse direction
       this.dr = !this.dr;
     }
+    if (this.y < this.r / 2 || this.y > height - this.r / 2) {
+      //reverse direction
+      this.drv = !this.drv;
+    }
+
+    return this;
   }
 
   checkcollision() {
@@ -59,20 +71,21 @@ class Ecl {
           this.colour = "red";
           Ecl.inst[w].colour = "red";
           this.draw();
-          delete this;
+          //delete this;
         } else {
           this.colour = "yellow";
           Ecl.inst[w].colour = "yellow";
         }
       }
     }
+    return this;
   }
 }
 
 function setup() {
   createCanvas(400, 500);
 
-  const howManyCircles = 10;
+  const howManyCircles = 20;
 
   for (let z = 0; z < howManyCircles; z++) {
     //define parameters for a new circle
@@ -106,9 +119,6 @@ function draw() {
 
   //dr == true ? (m = m - 1) : (m = m + 1);
   m.forEach((s, ndx) => {
-    s.draw();
-    s.edges();
-    s.move();
-    s.checkcollision();
+    s.draw().edges().move().checkcollision();
   });
 }
